@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Itinéraire OpenStreetMap avec bornes de recharge</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #map {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .card {
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        padding: 10px;
+        z-index: 1000;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      #route-card {
+        bottom: 20px;
+        right: 20px;
+        width: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #range-card {
+        bottom: 20px;
+        left: 20px;
+        width: 300px;
+      }
+
+      .card.hidden {
+        transform: translateX(-110%);
+      }
+
+      .card input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .card img {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+      }
+
+      .notification {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ffcccb;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 4px;
+        padding: 10px 20px;
+        z-index: 2000;
+        display: none;
+      }
+
+      #vehicle-carousel-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      #vehicle-carousel {
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 200px;
+        max-width: 200px;
+      }
+
+      #vehicle-carousel img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      #prevVehicle,
+      #nextVehicle {
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      #prevVehicle img,
+      #nextVehicle img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .vehicle-card {
+        min-width: 200px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        background-color: #f9f9f9;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        cursor: pointer;
+      }
+
+      .vehicle-card:hover {
+        transform: scale(1.05);
+      }
+
+      .vehicle-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+
+      .vehicle-card.selected {
+        border: 2px solid green;
+      }
+
+      .loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3000;
+        display: none;
+      }
+
+      .loader.show {
+        display: block;
+      }
+
+      .error {
+        border-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Card pour le trajet -->
+    <div id="route-card" class="card">
+      <input
+        type="text"
+        id="start"
+        placeholder="Point de départ (ex. Annecy)"
+      />
+      <img id="swapIcon" src="./image/icon_change.png" alt="Inverser" />
+      <input type="text" id="end" placeholder="Destination (ex. Paris)" />
+      <img
+        id="routeWithChargingIcon"
+        src="./image/voiture-musclee.png"
+        alt="Itinéraire avec bornes"
+      />
+    </div>
+
+    <div id="range-card" class="card">
+      <h3>Choisissez votre véhicule</h3>
+      <div id="vehicle-carousel-wrapper">
+        <button id="prevVehicle">
+          <img src="./image/back.png" alt="Précédent" />
+        </button>
+        <div id="vehicle-carousel"></div>
+        <button id="nextVehicle">
+          <img src="./image/next.png" alt="Suivant" />
+        </button>
+      </div>
+      <div id="trip-info" style="margin-top: 20px">
+        <p>Distance totale : <span id="total-distance"></span> km</p>
+        <p>Prix total : <span id="total-price"></span> €</p>
+        <p>Temps total : <span id="total-time"></span></p>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./js/index.js"></script>
+  </body>
+</html>

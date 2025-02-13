@@ -1,0 +1,3 @@
+rest/.vscode/*
+rest/node_modules/*
+soap/model/__pycache__/*
