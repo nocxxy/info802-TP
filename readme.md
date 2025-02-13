@@ -12,11 +12,18 @@ Cette API permet d'obtenir des informations géographiques, des itinéraires et 
    ```
 2. Lancez le serveur :
    ```sh
-   node server.js
+   npm start
    ```
    Le serveur démarre sur `http://localhost:3000`
 
+## Lien vers le deploiement
+
+[Le service soap](https://itineraire-evan-meziere-soap.azurewebsites.net/?wsdl)
+[L'api](https://itineraire-evan-meziere.azurewebsites.net)
+
 ## Routes de l'API
+
+Si vous allez directement sur le lien cela vous affichera l'application.
 
 ### 1. Recherche de ville (OpenStreetMap)
 
